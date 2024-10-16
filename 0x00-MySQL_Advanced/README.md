@@ -41,3 +41,6 @@ id  name
 7   Suspense
 8   Thriller
 $
+
+
+NB:  I added a bash script namely setup.sh, to setup MySQL in docker container for Ubuntu 22.04 LTS
