@@ -5,7 +5,6 @@ the collection Nginx of the database logs.
 """
 
 from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure
 
 
 def main():
@@ -13,16 +12,8 @@ def main():
     This function interacts with the MongoDB collection
     containing Nginx logs.
     """
-    try:
-        # Connect to the MongoDB database
-        client = MongoClient('mongodb://localhost:27017')
-        # Test if connection is successful
-        client.admin.command('ping')
-        print("Connected successfully to MongoDB")
-    except ConnectionFailure as e:
-        print(f"Could not connect to MongoDB: {e}")
-        return
-
+    # Connect to the MongoDB database
+    client = MongoClient('mongodb://localhost:27017')
     # Accessing the Nginx collection in 'logs' db
     collection = client.logs.nginx
 
