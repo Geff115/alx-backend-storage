@@ -3,7 +3,7 @@
 This script creates a Cache class
 """
 
-from typing import Union
+from typing import Union, Callable
 import redis
 import uuid
 
@@ -27,3 +27,30 @@ class Cache:
         self._redis.set(random_key, data)
 
         return random_key
+
+    def get(self, key: str, fn: Callable = None) -> Union[str, bytes, None]:
+        """Retrieves data from the Redis cache using the given key.
+        ARGS:
+            key: The key used to retrieve the data.
+            fn: An optional callable function that will be
+            applied to the retrieved data before returning.
+        RETURN:
+            The retrieved data, or None if the key is not found.
+        """
+        data = self._redis.get(key)
+        if data is None:
+            return None
+
+        return fn(data) if fn else data
+
+    def get_str(self, key: str) -> Union[str, None]:
+        """This method decodes the byte string to a
+        UTF-8 string.
+        """
+        return self.get(key, lambda d: d.decode("utf-8"))
+
+    def get_int(self, key: str) -> Union[int, None]:
+        """This method converts the byte string to an
+        integer
+        """
+        return self.get(key, int)
