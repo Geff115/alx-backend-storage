@@ -15,7 +15,7 @@ class Cache:
 
     - store: A Method of the Cache class.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """Inititalizing a Redis client"""
         self._redis = redis.Redis()
         # clearing any existing Redis data
