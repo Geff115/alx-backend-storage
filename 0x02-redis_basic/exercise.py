@@ -21,7 +21,7 @@ class Cache:
         # clearing any existing Redis data
         self._redis.flushdb()
 
-    def store(self, data: Union[str, int, float, bytes]) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """storing the data using a generated random key"""
         random_key = str(uuid.uuid4())
         self._redis.set(random_key, data)
