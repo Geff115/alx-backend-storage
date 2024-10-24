@@ -12,7 +12,7 @@ import functools
 def call_history(method: Callable) -> Callable:
     """Decorator to store the history of inputs and outputs of a method."""
     @functools.wraps(method)
-    def wrapper(self, *args, **kwargs):
+    def wrapper(self, *args, **kwargs) -> Any:
         """The wrapped function that stores the input/output history."""
         r = self._redis  # Access Redis client from the Cache instance
 
