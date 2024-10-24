@@ -45,7 +45,3 @@ def get_page(url: str) -> str:
     """Fetches the HTML content of a URL."""
     response = requests.get(url)
     return response.text
-
-
-if __name__ == "__main__":
-    print(get_page("http://slowwly.robertomurray.co.uk"))
