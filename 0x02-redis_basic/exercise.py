@@ -3,18 +3,18 @@
 This script creates a Cache class
 """
 
-from typing import Union, Callable
+from typing import Union, Callable, Any
 import redis
 import uuid
 import functools
 
 
-def count_calls(method: Callable) -> Callable:
+def count_calls(method: Callable[..., Any]) -> Callable[..., Any]:
     """This decorator takes a callable method as
     argument, and returns a Callable
     """
     @functools.wraps(method)
-    def wrapper(self, *args, **kwargs) -> Callable:
+    def wrapper(self, *args: Any, **kwargs: Any) -> Any:
         """The callable function"""
         r = self._redis  # Using the Redis client from the Cache instance
 
