@@ -9,12 +9,12 @@ import uuid
 import functools
 
 
-def count_calls(method: Callable[..., Any]) -> Callable[..., Any]:
+def count_calls(method: Callable) -> Callable:
     """This decorator takes a callable method as
     argument, and returns a Callable
     """
     @functools.wraps(method)
-    def wrapper(self, *args: Any, **kwargs: Any) -> Any:
+    def wrapper(self, *args: Any, **kwargs: Any) -> Callable:
         """The callable function"""
         r = self._redis  # Using the Redis client from the Cache instance
 
