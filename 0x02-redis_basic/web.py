@@ -6,6 +6,7 @@ This script fetches HTML content of a URL and caches it.
 import requests
 import redis
 import functools
+from typing import Callable
 
 
 # Initialize Redis client
@@ -44,3 +45,7 @@ def get_page(url: str) -> str:
     """Fetches the HTML content of a URL."""
     response = requests.get(url)
     return response.text
+
+
+if __name__ == "__main__":
+    print(get_page("http://slowwly.robertomurray.co.uk"))
