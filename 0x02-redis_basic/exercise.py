@@ -6,6 +6,30 @@ This script creates a Cache class
 from typing import Union, Callable
 import redis
 import uuid
+import functools
+
+
+def count_calls(method: Callable) -> Callable:
+    """This decorator takes a callable method as
+    argument, and returns a Callable
+    """
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs) -> Callable:
+        """The callable function"""
+        r = self._redis  # Using the Redis client from the Cache instance
+
+        # Generating the key for this function
+        key = f"call_count:{method.__qualname__}"
+
+        # Increment the counter
+        r.incr(key)
+
+        # Calling the original function
+        result = method(self, *args, **kwargs)
+
+        return result
+
+    return wrapper
 
 
 class Cache:
@@ -21,6 +45,7 @@ class Cache:
         # clearing any existing Redis data
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """storing the data using a generated random key"""
         random_key = str(uuid.uuid4())
@@ -37,6 +62,12 @@ class Cache:
         RETURN:
             The retrieved data, or None if the key is not found.
         """
+        # If the key is asking for the call count, return it
+        if key == "Cache.store":
+            count_key = f"call_count:{key}"
+            count = self._redis.get(count_key)
+            return count
+
         data = self._redis.get(key)
         if data is None:
             return None
