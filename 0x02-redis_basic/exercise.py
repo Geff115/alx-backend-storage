@@ -125,7 +125,9 @@ def replay(method: Callable) -> None:
     inputs = r.lrange(input_key, 0, -1)
     outputs = r.lrange(output_key, 0, -1)
 
-    # Using zip to loop over inputs and outputs together
+    # Use zip to loop over inputs and outputs together
     for input_data, output_data in zip(inputs, outputs):
-        print(f"{method.__qualname__}\
-              (*{input_data.decode('utf-8')}) ->{output_data.decode('utf-8')}")
+        print(
+            f"{method.__qualname__}(*{input_data.decode('utf-8')}) -> "
+            f"{output_data.decode('utf-8')}"
+        )
