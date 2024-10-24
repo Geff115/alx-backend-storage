@@ -9,7 +9,7 @@ import uuid
 import functools
 
 
-def count_calls(method: Callable) -> Callable:
+def count_calls(method: Callable[..., Any]) -> Callable:
     """This decorator takes a callable method as
     argument, and returns a Callable
     """
