@@ -9,6 +9,31 @@ import uuid
 import functools
 
 
+def call_history(method: Callable) -> Callable:
+    """Decorator to store the history of inputs and outputs of a method."""
+    @functools.wraps(method)
+    def wrapper(self, *args: Any, **kwargs: Any) -> Any:
+        """The wrapped function that stores the input/output history."""
+        r = self._redis  # Access Redis client from the Cache instance
+
+        # Defining keys for input and output lists
+        input_key = f"{method.__qualname__}:inputs"
+        output_key = f"{method.__qualname__}:outputs"
+
+        # Storing input arguments
+        r.rpush(input_key, str(args))
+
+        # Calling the original method and capturing its output
+        result = method(self, *args, **kwargs)
+
+        # Storing the output
+        r.rpush(output_key, str(result))
+
+        return result
+
+    return wrapper
+
+
 def count_calls(method: Callable) -> Callable:
     """This decorator takes a callable method as
     argument, and returns a Callable
@@ -45,6 +70,7 @@ class Cache:
         # clearing any existing Redis data
         self._redis.flushdb()
 
+    @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """storing the data using a generated random key"""
