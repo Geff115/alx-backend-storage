@@ -12,7 +12,7 @@ import functools
 def call_history(method: Callable) -> Callable:
     """Decorator to store the history of inputs and outputs of a method."""
     @functools.wraps(method)
-    def wrapper(self, *args, **kwargs) -> Any:
+    def wrapper(self, *args, **kwargs) -> Callable:
         """The wrapped function that stores the input/output history."""
         r = self._redis  # Access Redis client from the Cache instance
 
@@ -39,7 +39,7 @@ def count_calls(method: Callable) -> Callable:
     argument, and returns a Callable
     """
     @functools.wraps(method)
-    def wrapper(self, *args, **kwargs) -> Any:
+    def wrapper(self, *args, **kwargs) -> Callable:
         """The callable function"""
         r = self._redis  # Using the Redis client from the Cache instance
 
