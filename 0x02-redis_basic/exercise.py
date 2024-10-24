@@ -9,7 +9,7 @@ import uuid
 import functools
 
 
-def call_history(method: Callable) -> Callable:
+def call_history(method: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator to store the history of inputs and outputs of a method."""
     @functools.wraps(method)
     def wrapper(self, *args: Any, **kwargs: Any) -> Any:
